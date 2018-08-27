@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentsTable extends Migration
+class CreateThanasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,13 @@ class CreateStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('thanas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('roll');
 
-            $table->integer('country_id')->unsigned()->nullable();
-            $table->foreign('country_id')->references('id');
             $table->integer('district_id')->unsigned()->nullable();
-            $table->foreign('district_id')->references('id');
-            $table->integer('thana_id')->unsigned()->nullable();
-            $table->foreign('thana_id')->references('id');
+            $table->foreign('district_id')->references('id')
+                ->on('districts')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ class CreateStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('students');
+        Schema::drop('thanas');
     }
 }

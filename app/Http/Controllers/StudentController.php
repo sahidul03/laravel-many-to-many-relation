@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Country;
+use App\Models\District;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -27,7 +29,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('student.create');
+        $countires = Country::pluck('name', 'id')->toArray();
+        return view('student.create', compact('countires'));
     }
 
     /**
@@ -103,5 +106,18 @@ class StudentController extends Controller
         Student::find($id)->delete();
         return redirect()->route('student.index')
             ->with('success','Student deleted successfully');
+    }
+
+    public function getDistricts($country_id)
+    {
+        $country = Country::find($country_id);
+        return $country->districts()->select('id', 'name')->get();
+    }
+
+
+    public function getThanas($district_id)
+    {
+        $district = District::find($district_id);
+        return $district->thanas()->select('id', 'name')->get();
     }
 }

@@ -17,6 +17,8 @@ Route::get('/', function () {
 Route::resource('student', 'StudentController', ['except' => []]);
 Route::resource('course', 'CourseController', ['except' => []]);
 Route::resource('course_student', 'CourseStudentController', ['except' => []]);
+Route::get('country/{country_id}/districts', 'StudentController@getDistricts');
+Route::get('district/{district_id}/thanas', 'StudentController@getThanas');
 Route::auth();
 
 Route::get('/home', 'CourseController@index');

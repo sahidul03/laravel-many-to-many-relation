@@ -37,6 +37,25 @@
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong>Country:</strong>
+                                    {!! Form::select('country_id', $countires, null, ['class' => 'form-control']) !!}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong>District:</strong>
+                                    <select name="district" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong>Thana:</strong>
+                                    <select name="thana" class="form-control"></select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-12 col-md-12">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
@@ -46,5 +65,27 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $('select[name="country_id"]').on('change', function() {
+            var countryID = $(this).val();
+                if(countryID) {
+                $.ajax({
+                    url: '/country/' + encodeURI(countryID) + '/districts',
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                    $('select[name="district"]').empty();
+                    $.each(data, function(key, value) {
+                        $('select[name="district"]').append('<option value="'+ value +'">'+ value +'</option>');
+                        });
+                    }
+                });
+                }else{
+                $('select[name="district"]').empty();
+                  }
+               });
+            });
+    </script>
 @endsection
 
