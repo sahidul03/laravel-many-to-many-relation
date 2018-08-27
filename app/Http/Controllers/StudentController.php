@@ -59,9 +59,13 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::find($id);
-        $courses = $student->courses;
-        return view('student.show', compact('student', 'courses'));
+        $student = Student::find($id)
+            ->with('country')
+            ->with('district')
+            ->with('thana')
+            ->with('courses')
+            ->first();
+        return view('student.show', compact('student'));
     }
 
     /**
@@ -111,13 +115,13 @@ class StudentController extends Controller
     public function getDistricts($country_id)
     {
         $country = Country::find($country_id);
-        return $country->districts()->select('id', 'name')->get();
+        return $country->districts()->pluck('name', 'id');
     }
 
 
     public function getThanas($district_id)
     {
         $district = District::find($district_id);
-        return $district->thanas()->select('id', 'name')->get();
+        return $district->thanas()->pluck('name', 'id');
     }
 }
